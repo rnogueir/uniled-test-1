@@ -9,7 +9,7 @@ class Logger
 
   public static function log($msg)
   {
-    $f = fopen($logfile, 'w+');
+    $f = fopen(self::$logfile, 'a');
     fputs($f, $msg);
     fclose($f);
   }

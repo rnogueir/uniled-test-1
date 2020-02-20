@@ -7,7 +7,7 @@ class Contact
 {
 
   private $database = null;
-  private $table = 'contacts';
+  private static $table = 'contacts';
   private $referrer_name = null;
   private $friend_name = null;
   private $friend_email = null;
@@ -82,7 +82,7 @@ class Contact
     {
       $this->database->beginTransaction();
 
-      $sql = "INSERT INTO " . $this->table . " (created_at, referrer_name, friend_name, friend_email, status) VALUES (now(), ?, ?, ?, ?)";
+      $sql = "INSERT INTO " . self::$table . " (created_at, referrer_name, friend_name, friend_email, status) VALUES (now(), ?, ?, ?, ?)";
       $stmt = $this->database->prepare($sql);
       $args = array($this->referrer_name, $this->friend_name, $this->friend_email, $this->status);
       $stmt->execute($args);
@@ -98,6 +98,38 @@ class Contact
     return true;
 
   }
+
+
+  public static function listPendingMail($db)
+  {
+    return $db->query('SELECT * FROM ' . self::$table . ' WHERE status = "I"');
+  }
+
+
+  public static function updateFinalStatus($db, $id)
+  {
+    try
+    {
+      $db->beginTransaction();
+
+      $sql = "UPDATE " . self::$table . " SET status = ? WHERE id = ?";
+      $stmt = $db->prepare($sql);
+      $args = array('F', $id);
+      $stmt->execute($args);
+
+      $db->commit();
+    }
+    catch(\PDOException $p)
+    {
+      $db->rollBack();
+      return false;
+    }
+
+    return true;
+
+  }
+
+  
 
 }
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace UniLEDApp;
 
 use UniLEDApp\Form as Form;
+use UniLEDApp\Mail as Mail;
+use UniLEDApp\Contact as Contact;
 
 
 class UniLEDApp
@@ -12,13 +14,14 @@ class UniLEDApp
   private $pdo = null;
   private $form = null;
   private $config = null;
+  private $mailer = null;
 
 
-  public function start()
+  public function __construct()
   {
 
     // read config file
-    $json = file_get_contents('../.env');
+    $json = file_get_contents(__DIR__ . '/../.env');
     $this->config = json_decode($json);
 
     // define DB connection
@@ -35,6 +38,10 @@ class UniLEDApp
 
     // instantiate a form
     $this->form = new Form($this->pdo);
+
+    // instantiate a mailer
+    $this->mailer = new Mail;
+    $this->mailer->config($this->config->email);
 
     return true;
 
@@ -65,6 +72,26 @@ class UniLEDApp
   {
     $this->form->save();
     return true;
+  }
+
+
+  public function sendPendingMail()
+  {
+
+    $pending_mail = Contact::listPendingMail($this->pdo);
+    foreach($pending_mail as $m)
+    {
+      $params = array(
+                  'to_address' => $m['friend_email'],
+                  'to_name' => $m['friend_name'],
+                  'subject' => 'A great deal from your friend ' . $m['referrer_name'] . '!'
+                     );
+      $this->mailer->sendMail($params);
+      Contact::updateFinalStatus($this->pdo, $m['id']);
+    }
+
+    return true;
+
   }
 
 

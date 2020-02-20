@@ -7,7 +7,6 @@ use UniLEDApp\UniLEDApp;
 
 
 $app = new UniLEDApp;
-$app->start();
 
 
 // fill the form object with the POST fields
