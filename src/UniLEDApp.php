@@ -57,8 +57,7 @@ class UniLEDApp
 
   public function validateForm()
   {
-    $this->form->validate();
-    return true;
+    return $this->form->validate();
   }
 
 

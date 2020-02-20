@@ -26,9 +26,7 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
   session_start();
   if($_SESSION['error_msg'] != null)
   {
-?>
-    <p class='alert'>You must give a valid e-mail address!</p>
-<?php
+    echo "<p class='alert'>" . $_SESSION['error_msg'] . "</p>";
   }
   unset($_SESSION['error_msg']);
 ?>
@@ -38,15 +36,15 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
       <table id='form-table' width='600' align='center'>
         <tr>
           <td class='label-cell'><label for='referrer_name'><b> Your name *</b></label></td>
-          <td class='input-cell'><input name='referrer_name' type="text"></td>
+          <td class='input-cell'><input name='referrer_name' type="text" value='<?php echo $_SESSION['form']['referrer_name']; ?>'></td>
         </tr>
         <tr>
           <td class='label-cell'><label for='friend_name'><b> Friend's name *</b></label></td>
-          <td class='input-cell'><input name='friend_name' type="text"></td>
+          <td class='input-cell'><input name='friend_name' type="text" value='<?php echo $_SESSION['form']['friend_name']; ?>'></td>
         </tr>
         <tr>
           <td class='label-cell'><label for='friend_email'><b> Friend's e-mail *</b></label></td>
-          <td class='input-cell'><input name='friend_email' type="text"></td>
+          <td class='input-cell'><input name='friend_email' type="text" value='<?php echo $_SESSION['form']['friend_email']; ?>'></td>
         </tr>
         <tr>
           <td class='label-cell'>&nbsp;</td>

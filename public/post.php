@@ -13,11 +13,12 @@ $app = new UniLEDApp;
 $app->populateForm();
 
 // validate the form data
-if(!$app->validateForm())
+if($app->validateForm() == false)
 {
   // store error message to be shown on form after redirecting
   session_start();
   $_SESSION['error_msg'] = $app->getFormValidationMsg();
+  $_SESSION['form'] = $_POST;
   session_write_close();
 
   // redirect back to form in case of validation error(s)
