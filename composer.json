@@ -1,0 +1,13 @@
+{
+    "name": "uniled/test-1",
+    "description": "Technical test number 1 for UniLED",
+    "type": "project",
+    "autoload": {
+    "psr-4": {
+      "UniLEDApp\\":"src/"
+      }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.1"
+    }
+}
