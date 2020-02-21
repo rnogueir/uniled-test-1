@@ -85,8 +85,10 @@ class UniLEDApp
                   'to_name' => $m['friend_name'],
                   'subject' => 'A great deal from your friend ' . $m['referrer_name'] . '!'
                      );
-      $this->mailer->sendMail($params);
-      Contact::updateFinalStatus($this->pdo, $m['id']);
+      if($this->mailer->sendMail($params))
+      {
+        Contact::updateFinalStatus($this->pdo, $m['id']);
+      }
     }
 
     return true;

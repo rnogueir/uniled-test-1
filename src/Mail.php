@@ -66,12 +66,13 @@ class Mail extends PHPMailer
     $this->SMTPAuth = true;
     $this->setToAddress($params['to_address'], $params['to_name']);
     $this->setSubject($params['subject']);
-    $this->msgHTML(file_get_contents('./jobs/contents.html'), __DIR__);
+    $this->msgHTML(file_get_contents(__DIR__ . '/../jobs/contents.html'), __DIR__);
     $this->AltBody = 'That is a great deal from UniLED, shared by your friend.';
 
     if (!$this->send()) 
     {
-      Logger::log('Mailer Error: '. $this->ErrorInfo);
+      Logger::log("[" . date('Y-m-d H:i:s') . "] Mailer error sending to " . $params['to_address'] . ": " . $this->ErrorInfo . "\r\n");
+      return false;
     }
     else 
     {

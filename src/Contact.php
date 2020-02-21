@@ -112,7 +112,7 @@ class Contact
     {
       $db->beginTransaction();
 
-      $sql = "UPDATE " . self::$table . " SET status = ? WHERE id = ?";
+      $sql = "UPDATE " . self::$table . " SET status = ?, updated_at = now() WHERE id = ?";
       $stmt = $db->prepare($sql);
       $args = array('F', $id);
       $stmt->execute($args);

@@ -5,7 +5,7 @@ namespace UniLEDApp;
 class Logger
 {
 
-  private static $logfile = 'log/uniled.log';
+  private static $logfile = __DIR__ . '/../log/uniled.log';
 
   public static function log($msg)
   {
